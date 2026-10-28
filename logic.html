@@ -1,0 +1,107 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>股票判断逻辑</title><style>
+:root{--bg:#0b0f16;--panel:#131a24;--line:#222d3d;--txt:#d7dce5;--mut:#7d8a9c;
+--acc:#7cc4ff;--up:#e5484d;--dn:#22b8a6;--code:#0f1620}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);padding:26px 20px 60px;
+font:15px/1.75 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;max-width:940px;margin:0 auto}
+h1{font-size:24px;margin:0 0 6px;font-weight:600}
+h2{font-size:18px;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:15px;margin:20px 0 8px;color:#b9c3d1}
+p{margin:9px 0}
+a{color:var(--acc)}
+code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:13px;
+font-family:Consolas,Monaco,monospace}
+pre{background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+overflow-x:auto;font-size:13px;line-height:1.6}
+pre code{background:none;padding:0}
+blockquote{margin:12px 0;padding:8px 14px;border-left:3px solid var(--acc);
+background:rgba(124,196,255,.07);color:#b9c3d1;border-radius:0 6px 6px 0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#161d29;color:#9aa7b8;font-weight:600}
+tr:nth-child(even) td{background:#101720}
+ul,ol{margin:8px 0;padding-left:22px}
+li{margin:4px 0}
+strong{color:#fff}
+hr{border:0;border-top:1px solid var(--line);margin:26px 0}
+</style></head><body><h1>股票判断逻辑 v1.0</h1>
+<blockquote>这套系统只做三件事：<strong>给定一个票，算出该在什么价位买、亏多少走、赚到哪里；每天检查这些条件有没有被触发；把结果推给你。</strong><br>它不选股。选股是你的工作。</blockquote>
+<hr>
+<h2>0. 一句话版本</h2>
+<blockquote>在 20 日箱体的下沿附近买入，止损放在箱底下方 0.6 个 ATR，目标看到箱顶（T1）和箱顶上方 0.6 倍箱高（T2）。<br>周线没站上 EMA26 的票，只降级提示，不主动喊买。</blockquote>
+<hr>
+<h2>1. 四层结构</h2>
+<pre><code>① 数据层   东财 → 腾讯 → 新浪，三级兜底，6 小时缓存
+② 定价层   箱体 + ATR    → 买点区 / 止损 / T1 / T2   （plan.py）
+③ 信号层   回踩 / 突破 / 确认K / 否决                 （rules.py）
+④ 执行层   仓位反推 / 推送 / 看板 / 归档              （scan.py / dashboard.py）</code></pre>
+<p>每一层都能单独跑、单独测。<strong>改参数只改第 2、3 层，不动其他。</strong></p>
+<hr>
+<h2>2. 定价：价位是怎么算出来的</h2>
+<p>对每只票，取最近 20 个交易日：</p>
+<pre><code>箱体上沿 hi = max(high, 20日)
+箱体下沿 lo = min(low,  20日)
+箱体高度 h  = hi − lo
+ATR14       = 14 日平均真实波幅</code></pre>
+<p>然后：</p>
+<table><thead><tr><th>项目</th><th>公式</th><th>为什么</th></tr></thead><tbody><tr><td><strong>买点区</strong></td><td><code>lo × 1.005 ~ lo + 0.18h</code></td><td>贴着箱底买，不回撤就不买</td></tr><tr><td><strong>止损</strong></td><td><code>lo − 0.6 × ATR</code></td><td>留 0.6 个 ATR 的缓冲，躲开插针</td></tr><tr><td><strong>T1</strong></td><td><code>hi</code></td><td>箱顶是第一道真实供给</td></tr><tr><td><strong>T2</strong></td><td><code>hi + 0.6h</code></td><td>突破箱体后的量度目标</td></tr><tr><td><strong>突破线</strong></td><td><code>hi × 1.005</code></td><td>放量站上箱顶才算突破</td></tr></tbody></table>
+<p><strong>区间中点的盈亏比：</strong></p>
+<pre><code>R:R(T1) = (hi − 区中) / (区中 − 止损)
+R:R(T2) = (T2 − 区中) / (区中 − 止损)</code></pre>
+<blockquote>这套规则的来历：在 118 只票、1585 笔样本上测出 <strong>+0.096R/笔</strong>（胜率 35.7%，59% 止损、21% 摸到 T1 平均 +2.5R）。这是目前唯一测出正期望的规则。</blockquote>
+<hr>
+<h2>3. 信号：每天怎么判断</h2>
+<h3>3.1 决策优先级（从上往下，命中就停）</h3>
+<pre><code>┌─ 硬否决（VETO）──────────────────────────────┐
+│ ① 收盘 &lt; 失效位                              │
+│ ② 收盘 &lt; 止损                                │
+│ ③ 当日跌幅 ≤ −7%                             │
+│ ④ 放量跌破买点区（量 &gt;1.4×5日均量 且 收盘 &lt; 区下沿×0.97）│
+└──────────────────────────────────────────────┘
+        ↓ 没命中
+┌─ 软闸门（降级）──────────────────────────────┐
+│ 计划要求周线站上 EMA26，但周线收盘 &lt; 周EMA26  │
+│ → 不否决，但只有确认分 ≥ 2 才提示             │
+└──────────────────────────────────────────────┘
+        ↓
+┌─ 突破（BREAKOUT）────────────────────────────┐
+│ 收盘 ≥ 突破线  且  量 ≥ 1.3 × 5日均量        │
+└──────────────────────────────────────────────┘
+        ↓ 没突破
+┌─ 回踩（PULLBACK / TOUCH）────────────────────┐
+│ 当日最低 ≤ 买点区上沿  且  收盘 ≥ 买点区下沿  │
+└──────────────────────────────────────────────┘</code></pre>
+<h3>3.2 回踩的“确认分”（0–4 分）</h3>
+<table><thead><tr><th>信号</th><th>条件</th><th>含义</th></tr></thead><tbody><tr><td>收阳</td><td>收盘 &gt; 开盘</td><td>有人在接</td></tr><tr><td>缩量</td><td>量 &lt; 0.9 × 5日均量</td><td>抛压衰竭</td></tr><tr><td>长下影</td><td>(min(开,收) − 最低) / 振幅 &gt; 0.4</td><td>探底回升</td></tr><tr><td>反包</td><td>收盘 &gt; 昨日最高</td><td>直接吃掉前一天</td></tr></tbody></table>
+<ul><li><strong>≥ 1 分</strong> → <code>PULLBACK</code>（买点区触发）</li><li><strong>0 分</strong> → <code>TOUCH</code>（触及买点区，还没确认）</li><li>软闸门下 <strong>必须 ≥ 2 分</strong> 才提示，否则静默</li></ul>
+<h3>3.3 否决为什么这么设</h3>
+<table><thead><tr><th>条件</th><th>防的是什么</th></tr></thead><tbody><tr><td>跌破止损 / 失效位</td><td>计划已经死了，不许再补</td></tr><tr><td>单日 ≤ −7%</td><td>大阴线当天，任何买点都要重估</td></tr><tr><td>放量跌破买点区</td><td>缩量回踩变成放量出货</td></tr><tr><td>周线未站上 EMA26</td><td>中期趋势没修复，只做防守</td></tr></tbody></table>
+<hr>
+<h2>4. 仓位与风险</h2>
+<pre><code>单笔风险 = 账户 × 2.5%（= 1R）
+仓位%    = 2.5% ÷ 止损距离%
+单票上限 = 40%</code></pre>
+<p>例：止损距离 7% → 仓位 36%；止损距离 2.5% → 算出来 100%，<strong>按 40% 截断并警告“止损太近”</strong>。</p>
+<p><strong>铁律：</strong></p>
+<ol><li>止损只能上移，<strong>永远不下移</strong></li><li>不在否决状态下开仓</li><li>同板块不超过 2 只（避免一次全错）</li><li>T1 减一半，剩余止损移到成本</li></ol>
+<hr>
+<h2>5. 一天的节奏</h2>
+<table><thead><tr><th>时间</th><th>命令</th><th>数据</th><th>内容</th></tr></thead><tbody><tr><td><strong>09:15</strong></td><td><code>scan.py --morning</code></td><td>昨收（不刷新）</td><td>按距买点区远近排序，&quot;别碰&quot;清单</td></tr><tr><td><strong>14:45</strong></td><td><code>scan.py --preview</code></td><td>实时价拼一根暂定K线</td><td>现在收盘会不会触发</td></tr><tr><td>14:50–14:55</td><td>你下单</td><td>看盘口承接</td><td>—</td></tr><tr><td><strong>15:05</strong></td><td><code>scan.py</code></td><td>当日收盘</td><td>确认 + 日志 + 看板 + 部署</td></tr></tbody></table>
+<p>14:57 开始收盘集合竞价（不可撤单），所以决策必须在 14:50 前完成。</p>
+<hr>
+<h2>6. 参数表</h2>
+<table><thead><tr><th>参数</th><th>当前值</th><th>位置</th><th>改动的后果</th></tr></thead><tbody><tr><td>箱体周期</td><td>20 日</td><td><code>plan.py</code></td><td>越短越灵敏、越容易被噪音打</td></tr><tr><td>买点区高度</td><td>箱高 18%</td><td><code>plan.py</code></td><td>越大越容易触发、R:R 越低</td></tr><tr><td>止损缓冲</td><td>0.6 ATR</td><td><code>plan.py</code></td><td>越小止损越频繁、R:R 越虚高</td></tr><tr><td>突破放量倍数</td><td>1.3 × 5日均量</td><td><code>rules.py</code></td><td>越高信号越少</td></tr><tr><td>单笔风险</td><td>2.5%</td><td><code>plan.py</code> / 配置</td><td>直接决定回撤速度</td></tr><tr><td>单票上限</td><td>40%</td><td><code>plan.py</code></td><td>集中度</td></tr><tr><td>长上影/下影阈值</td><td>0.4</td><td><code>rules.py</code></td><td>确认分的松紧</td></tr></tbody></table>
+<hr>
+<h2>7. 哪些经过验证，哪些没有</h2>
+<h3>✅ 有数据支持</h3>
+<table><thead><tr><th>结论</th><th>样本</th><th>结果</th></tr></thead><tbody><tr><td>箱体+ATR 定价规则</td><td>1585 笔 / 118 只</td><td><strong>+0.096R/笔</strong>，胜率 35.7%</td></tr><tr><td>“等止跌再买”优于“下跌途中买”</td><td>98 只 / 45 期</td><td>弱势股里止跌比不止跌好 <strong>1.8pp/20日</strong></td></tr><tr><td>触发 ≠ 该买（盈亏比随现价变化）</td><td>逻辑推演</td><td>现价离止损越远，R:R 越低</td></tr></tbody></table>
+<h3>❌ 测过但没用</h3>
+<table><thead><tr><th>结论</th><th>样本</th><th>结果</th></tr></thead><tbody><tr><td>加周线闸门过滤入场</td><td>51 笔</td><td><strong>−2.40R</strong>（比不加还差）</td></tr><tr><td>浮盈 1R 移保本</td><td>55 笔</td><td>+0.74R（把赢家砍成平手）</td></tr><tr><td>“强势股回踩”选股打分</td><td>49 期 × 97 只</td><td>IC ≈ 0，多空 t=0.81</td></tr><tr><td>“弱势股止跌”当策略</td><td>同上</td><td>20 日超额 <strong>−0.36%</strong></td></tr></tbody></table>
+<h3>⚠️ 没验证过</h3>
+<ul><li>熊市里的表现（样本只有 1.3 年、单边上涨）</li><li>隔夜跳空对开盘价成交的影响</li><li>分红除权对“5 日收益”统计的干扰</li></ul>
+<hr>
+<h2>8. 已知缺陷</h2>
+<ol><li><strong>59% 的止损率</strong>——大部分信号是错的，靠 21% 的大赢家拉正，心理上难扛</li><li><strong>R:R 是“按现价”算的</strong>——现价离买点区远时，显示 0.4R 是在说“别追”，不是规则坏了</li><li><strong>周线 EMA 需要 26 周以上数据</strong>——次新股会显示“样本不足”</li><li><strong>不做行业轮动</strong>——板块强弱目前靠人看</li><li><strong>选股零贡献</strong>——四轮测试都没测出 alpha，这是最大的空白</li></ol>
+<hr>
+<h2>9. 一句话总结</h2>
+<blockquote><strong>定价有据（+0.096R/笔），信号可复现，仓位自动算，但选股仍然靠人。</strong><br>这套东西的价值是&quot;不让你在错误的位置开仓、不让你在亏损里加仓&quot;，<br>不是&quot;告诉你买什么&quot;。</blockquote></body></html>

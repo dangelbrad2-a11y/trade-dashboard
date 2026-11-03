@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>trade-kit · 2026-11-03 15:05</title><style>
+<title>trade-kit · 2026-11-03 18:57</title><style>
 :root{
   --bg:#0b0f16; --panel:#131a24; --line:#222d3d; --txt:#d7dce5; --mut:#7d8a9c;
   --up:#e5484d; --dn:#22b8a6; --zone:#2ecc71; --stop:#e5484d; --t1:#f1b93b; --t2:#609cff;
@@ -56,11 +56,28 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
 .pos{color:var(--up)} .neg{color:var(--dn)}
 .chip2{display:inline-block;border:1px solid;border-radius:14px;padding:3px 10px;font-size:12px}
 .chip2 i{font-style:normal;opacity:.6;margin-left:6px;font-size:11px}
+.calcbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#101720;border:1px solid var(--line);
+  border-radius:10px;padding:10px 14px;margin:0 0 14px;font-size:13px;color:#9aa7b8}
+.calcbar input{width:120px;background:#0b0f16;border:1px solid #2a3648;color:var(--txt);
+  border-radius:6px;padding:6px 9px;font-size:14px;outline:none}
+.calcbar button{background:#1d4ed8;border:0;color:#fff;border-radius:6px;padding:7px 14px;
+  font-size:13px;cursor:pointer}
+.calcbar button:hover{background:#2563eb}
+.calcbar .hint{color:#5d6a7c;font-size:11.5px}
+.calc{margin-top:8px;padding-top:8px;border-top:1px dashed #232d3b;font-size:12px;color:#8b97a8}
+.calc b{color:var(--txt);font-size:13px}
+.calc .cap{color:var(--t1)}
 </style></head>
 <body>
 <h1>trade-kit · 每日看板</h1>
-<div class="sub">2026-11-03 15:05　监控 31 只 · 在买点区 7 · 跌破/失效 5</div>
-<div class="mkt"><div class="mkr" style="border-color:#e5484d;color:#e5484d">大盘 防守　0/4</div><div class="mks"><div class="mk"><div class="mkn">上证指数</div><div class="mkp neg">3605 <span>-0.92%</span></div><div class="mkd">日↓ 周↓</div></div><div class="mk"><div class="mkn">深证成指</div><div class="mkp neg">10896 <span>-1.04%</span></div><div class="mkd">日↓ 周↓</div></div><div class="mk"><div class="mkn">创业板指</div><div class="mkp neg">2398 <span>-2.47%</span></div><div class="mkd">日↓ 周↓</div></div><div class="mk"><div class="mkn">科创50</div><div class="mkp neg">1159 <span>-3.17%</span></div><div class="mkd">日↓ 周↓</div></div></div></div><div class="mkt"><div class="mkr" style="border-color:#3a4759;color:#9aa7b8">板块</div><div class="mks"><span class="chip2" style="border-color:#f1b93b;color:#f1b93b">消费 中<i>13只 +4.1%</i></span><span class="chip2" style="border-color:#e5484d;color:#e5484d">CARBONLOGY 弱<i>5只 -10.8%</i></span><span class="chip2" style="border-color:#e5484d;color:#e5484d">BUYBACK 弱<i>5只 -6.3%</i></span><span class="chip2" style="border-color:#e5484d;color:#e5484d">半导体材料 弱<i>3只 -20.6%</i></span><span class="chip2" style="border-color:#7d8a9c;color:#7d8a9c">机器人·零部件 样本少<i>2只 +16.8%</i></span><span class="chip2" style="border-color:#7d8a9c;color:#7d8a9c">锂电 样本少<i>1只 -13.0%</i></span><span class="chip2" style="border-color:#7d8a9c;color:#7d8a9c">环保 样本少<i>1只 -9.6%</i></span></div></div>
+<div class="sub">2026-11-03 18:57　监控 31 只 · 在买点区 7 · 跌破/失效 5</div>
+<div class="mkt"><div class="mkr" style="border-color:#e5484d;color:#e5484d">大盘 防守　0/4</div><div class="mks"><div class="mk"><div class="mkn">上证指数</div><div class="mkp neg">3608 <span>-0.82%</span></div><div class="mkd">日↓ 周↓</div></div><div class="mk"><div class="mkn">深证成指</div><div class="mkp neg">10877 <span>-1.21%</span></div><div class="mkd">日↓ 周↓</div></div><div class="mk"><div class="mkn">创业板指</div><div class="mkp neg">2392 <span>-2.73%</span></div><div class="mkd">日↓ 周↓</div></div><div class="mk"><div class="mkn">科创50</div><div class="mkp neg">1151 <span>-3.81%</span></div><div class="mkd">日↓ 周↓</div></div></div></div><div class="mkt"><div class="mkr" style="border-color:#3a4759;color:#9aa7b8">板块</div><div class="mks"><span class="chip2" style="border-color:#f1b93b;color:#f1b93b">消费 中<i>13只 +4.1%</i></span><span class="chip2" style="border-color:#e5484d;color:#e5484d">CARBONLOGY 弱<i>5只 -10.8%</i></span><span class="chip2" style="border-color:#e5484d;color:#e5484d">BUYBACK 弱<i>5只 -6.3%</i></span><span class="chip2" style="border-color:#e5484d;color:#e5484d">半导体材料 弱<i>3只 -20.6%</i></span><span class="chip2" style="border-color:#7d8a9c;color:#7d8a9c">机器人·零部件 样本少<i>2只 +16.8%</i></span><span class="chip2" style="border-color:#7d8a9c;color:#7d8a9c">锂电 样本少<i>1只 -13.0%</i></span><span class="chip2" style="border-color:#7d8a9c;color:#7d8a9c">环保 样本少<i>1只 -9.6%</i></span></div></div>
+<div class="calcbar">
+  <span>账户总资金</span>
+  <input id="acct" inputmode="decimal" placeholder="100000"> 元
+  <button onclick="calcAll()">计算仓位</button>
+  <span class="hint">单笔止损 ≤2% · 单票 ≤40% · 按 100 股整手 · 按买点区中间价算</span>
+</div>
 <div class="alerts"><h2>今日信号</h2><div class="ai veto"><span class="nm">兆威机电 003021</span> · 计划被否·不推送：收盘 84.69 跌破失效位 88.0｜收盘 84.69 已在止损 88.5 下方</div></div>
 <div class="grp">消费<span>13 只 · 平均 +0.54%</span></div><div class="grid">
     <div class="card">
@@ -82,6 +99,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 96.98</span><span>买点 99.83–102.48</span><span>T1 116.81</span></div>
       <div class="meta"><span>止损距离 <b>-16.7%</b></span><span>R:R <b>0.2R</b> / <b>0.9R</b></span></div>
+      <div class="calc" data-entry="101.1550" data-stop="96.9800">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -102,6 +122,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 29.17</span><span>买点 29.95–30.64</span><span>T1 34.47</span></div>
       <div class="meta"><span>止损距离 <b>-17.1%</b></span><span>R:R <b>0.1R</b> / <b>0.6R</b></span></div>
+      <div class="calc" data-entry="30.2950" data-stop="29.1700">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -122,6 +145,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 8.63</span><span>买点 8.85–9.07</span><span>T1 10.25</span></div>
       <div class="meta"><span>止损距离 <b>-19.4%</b></span><span>R:R <b>-0.0R</b> / <b>0.5R</b></span></div>
+      <div class="calc" data-entry="8.9600" data-stop="8.6300">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -142,6 +168,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 17.17</span><span>买点 17.51–17.66</span><span>T1 18.77</span></div>
       <div class="meta"><span>止损距离 <b>-21.5%</b></span><span>R:R <b>-0.6R</b> / <b>-0.3R</b></span><span>周线 EMA26 <b>19.72</b>（站上）</span></div>
+      <div class="calc" data-entry="17.5850" data-stop="17.1700">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -162,6 +191,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 5.17</span><span>买点 5.27–5.35</span><span>T1 5.86</span></div>
       <div class="meta"><span>止损距离 <b>-7.5%</b></span><span>R:R <b>0.8R</b> / <b>1.7R</b></span></div>
+      <div class="calc" data-entry="5.3100" data-stop="5.1700">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -182,6 +214,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 14.01</span><span>买点 14.36–14.62</span><span>T1 16.12</span></div>
       <div class="meta"><span>止损距离 <b>-18.7%</b></span><span>R:R <b>-0.2R</b> / <b>0.2R</b></span><span>周线 EMA26 <b>14.92</b>（站上）</span></div>
+      <div class="calc" data-entry="14.4900" data-stop="14.0100">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -202,6 +237,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 37.45</span><span>买点 38.49–39.14</span><span>T1 42.96</span></div>
       <div class="meta"><span>止损距离 <b>-14.9%</b></span><span>R:R <b>-0.0R</b> / <b>0.5R</b></span></div>
+      <div class="calc" data-entry="38.8150" data-stop="37.4500">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -222,6 +260,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 9.24</span><span>买点 9.88–10.61</span><span>T1 14.15</span></div>
       <div class="meta"><span>止损距离 <b>-39.0%</b></span><span>R:R <b>0.4R</b> / <b>1.1R</b></span></div>
+      <div class="calc" data-entry="10.2450" data-stop="9.2400">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -242,6 +283,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 27.45</span><span>买点 28.47–29.4</span><span>T1 34.29</span></div>
       <div class="meta"><span>止损距离 <b>-10.5%</b></span><span>R:R <b>1.4R</b> / <b>2.6R</b></span></div>
+      <div class="calc" data-entry="28.9350" data-stop="27.4500">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -262,6 +306,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 19.37</span><span>买点 20.2–21.19</span><span>T1 26.13</span></div>
       <div class="meta"><span>止损距离 <b>-1.3%</b></span><span>R:R <b>25.0R</b> / <b>38.9R</b></span></div>
+      <div class="calc" data-entry="20.6950" data-stop="19.3700">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -282,6 +329,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 9.62</span><span>买点 9.95–10.11</span><span>T1 11.08</span></div>
       <div class="meta"><span>止损距离 <b>-9.7%</b></span><span>R:R <b>0.6R</b> / <b>1.3R</b></span></div>
+      <div class="calc" data-entry="10.0300" data-stop="9.6200">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -302,6 +352,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 125.45</span><span>买点 131.06–137.13</span><span>T1 167.72</span></div>
       <div class="meta"><span>止损距离 <b>-11.7%</b></span><span>R:R <b>1.9R</b> / <b>3.4R</b></span></div>
+      <div class="calc" data-entry="134.0950" data-stop="125.4500">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -322,6 +375,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 49.9</span><span>买点 51–51.5</span><span>T1 53.2</span></div>
       <div class="meta"><span>止损距离 <b>-8.0%</b></span><span>R:R <b>-0.2R</b> / <b>0.4R</b></span><span>周线 EMA26 <b>55.53</b>（未站上）</span></div>
+      <div class="calc" data-entry="51.2500" data-stop="49.9000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">CARBONLOGY<span>5 只 · 平均 +0.69%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -342,6 +398,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 22.3</span><span>买点 23.2–24.2</span><span>T1 27.3</span></div>
       <div class="meta"><span>止损距离 <b>-12.5%</b></span><span>R:R <b>0.8R</b> / <b>2.1R</b></span></div>
+      <div class="calc" data-entry="23.7000" data-stop="22.3000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -362,6 +421,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 58.6</span><span>买点 61–63</span><span>T1 71.2</span></div>
       <div class="meta"><span>止损距离 <b>-3.4%</b></span><span>R:R <b>5.4R</b> / <b>8.8R</b></span></div>
+      <div class="calc" data-entry="62.0000" data-stop="58.6000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -382,6 +444,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 61.5</span><span>买点 64–67.5</span><span>T1 79</span></div>
       <div class="meta"><span>止损距离 <b>-23.2%</b></span><span>R:R <b>0.2R</b> / <b>0.9R</b></span></div>
+      <div class="calc" data-entry="65.7500" data-stop="61.5000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -402,6 +467,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 3.47</span><span>买点 3.57–3.68</span><span>T1 4.28</span></div>
       <div class="meta"><span>止损距离 <b>-3.5%</b></span><span>R:R <b>5.8R</b> / <b>9.4R</b></span></div>
+      <div class="calc" data-entry="3.6250" data-stop="3.4700">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -422,6 +490,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 20.6</span><span>买点 21.6–22.4</span><span>T1 25.3</span></div>
       <div class="meta"><span>止损距离 <b>-5.1%</b></span><span>R:R <b>3.5R</b> / <b>6.8R</b></span><span>周线 EMA26 <b>30.14</b>（未站上）</span></div>
+      <div class="calc" data-entry="22.0000" data-stop="20.6000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">BUYBACK<span>5 只 · 平均 +0.79%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -442,6 +513,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 4.16</span><span>买点 4.28–4.55</span><span>T1 5.88</span></div>
       <div class="meta"><span>止损距离 <b>-6.0%</b></span><span>R:R <b>5.9R</b> / <b>9.8R</b></span></div>
+      <div class="calc" data-entry="4.4150" data-stop="4.1600">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -462,6 +536,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 77.05</span><span>买点 78.69–80.32</span><span>T1 89.5</span></div>
       <div class="meta"><span>止损距离 <b>-16.0%</b></span><span>R:R <b>0.0R</b> / <b>0.6R</b></span></div>
+      <div class="calc" data-entry="79.5050" data-stop="77.0500">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -482,6 +559,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 8.99</span><span>买点 9.43–10.02</span><span>T1 12.96</span></div>
       <div class="meta"><span>止损距离 <b>-10.6%</b></span><span>R:R <b>3.2R</b> / <b>5.4R</b></span></div>
+      <div class="calc" data-entry="9.7250" data-stop="8.9900">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -502,6 +582,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 137.79</span><span>买点 142.93–147.03</span><span>T1 168.97</span></div>
       <div class="meta"><span>止损距离 <b>-12.2%</b></span><span>R:R <b>0.8R</b> / <b>1.8R</b></span></div>
+      <div class="calc" data-entry="144.9800" data-stop="137.7900">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -522,6 +605,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 6.48</span><span>买点 6.66–6.77</span><span>T1 7.4</span></div>
       <div class="meta"><span>止损距离 <b>-10.2%</b></span><span>R:R <b>0.4R</b> / <b>1.1R</b></span></div>
+      <div class="calc" data-entry="6.7150" data-stop="6.4800">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">半导体材料<span>3 只 · 平均 -3.38%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -542,6 +628,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 64.44</span><span>买点 67.61–70.97</span><span>T1 87.85</span></div>
       <div class="meta"><span>止损距离 <b>-4.1%</b></span><span>R:R <b>7.9R</b> / <b>12.6R</b></span></div>
+      <div class="calc" data-entry="69.2900" data-stop="64.4400">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -562,6 +651,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 35.73</span><span>买点 38–39.55</span><span>T1 47.5</span></div>
       <div class="meta"><span>止损距离 <b>-9.3%</b></span><span>R:R <b>2.6R</b> / <b>4.3R</b></span></div>
+      <div class="calc" data-entry="38.7750" data-stop="35.7300">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -582,6 +674,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 35.34</span><span>买点 36.74–39.41</span><span>T1 52.4</span></div>
       <div class="meta"><span>止损距离 <b>-4.5%</b></span><span>R:R <b>9.8R</b> / <b>15.8R</b></span></div>
+      <div class="calc" data-entry="38.0750" data-stop="35.3400">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">机器人·零部件<span>2 只 · 平均 -5.16%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -602,6 +697,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 10.9</span><span>买点 11.55–11.9</span><span>T1 13.5</span></div>
       <div class="meta"><span>止损距离 <b>-12.6%</b></span><span>R:R <b>0.9R</b> / <b>1.7R</b></span></div>
+      <div class="calc" data-entry="11.7250" data-stop="10.9000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div>
     <div class="card">
       <div class="row1">
@@ -622,6 +720,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 88.5</span><span>买点 92–94</span><span>T1 101</span></div>
       <div class="meta"><span>周线 EMA26 <b>83.4</b>（站上）</span></div>
+      <div class="calc" data-entry="93.0000" data-stop="88.5000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">机器人·本体<span>1 只 · 平均 -4.56%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -642,6 +743,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 625</span><span>买点 630–645</span><span>T1 735</span></div>
       <div class="meta"><span>止损距离 <b>-1.1%</b></span><span>R:R <b>14.8R</b> / <b>24.1R</b></span></div>
+      <div class="calc" data-entry="637.5000" data-stop="625.0000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">锂电<span>1 只 · 平均 +3.83%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -662,6 +766,9 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 216.5</span><span>买点 226–230</span><span>T1 252</span></div>
       <div class="meta"><span>止损距离 <b>-15.2%</b></span><span>R:R <b>0.1R</b> / <b>0.8R</b></span></div>
+      <div class="calc" data-entry="228.0000" data-stop="216.5000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div><div class="grp">环保<span>1 只 · 平均 -2.19%</span></div><div class="grid">
     <div class="card">
       <div class="row1">
@@ -682,7 +789,45 @@ h1{font-size:19px;margin:0 0 4px;font-weight:600}
       </div>
       <div class="lbl"><span>止损 29.3</span><span>买点 31–31.8</span><span>T1 35</span></div>
       <div class="meta"><span>止损距离 <b>-5.1%</b></span><span>R:R <b>2.9R</b> / <b>7.2R</b></span></div>
+      <div class="calc" data-entry="31.4000" data-stop="29.3000">
+        <span class="res">输入总资金后计算</span>
+      </div>
     </div></div>
 
 <div class="foot">白点=现价，绿带=买点区，红/黄/蓝刻度=止损/T1/T2。数据为公开行情，仅供个人研究，不构成投资建议。</div>
+<script>
+(function(){
+  var KEY='tk_acct';
+  function nf(n){try{return n.toLocaleString('zh-CN');}catch(e){return String(n);}}
+  window.calcAll=function(){
+    var inp=document.getElementById('acct');
+    var acct=parseFloat((inp.value||'').replace(/[^0-9.]/g,''))||0;
+    try{localStorage.setItem(KEY,String(acct));}catch(e){}
+    var nodes=document.querySelectorAll('.calc');
+    for(var i=0;i<nodes.length;i++){
+      var el=nodes[i], out=el.querySelector('.res');
+      var entry=parseFloat(el.getAttribute('data-entry'));
+      var stop=parseFloat(el.getAttribute('data-stop'));
+      if(!acct||!entry||!stop||entry<=stop){out.textContent='输入总资金后计算';continue;}
+      var risk=entry-stop;
+      var shares=Math.floor(acct*0.02/risk/100)*100;
+      var capped=false, maxCost=acct*0.4;
+      if(shares*entry>maxCost){shares=Math.floor(maxCost/entry/100)*100;capped=true;}
+      if(shares<100){out.textContent='资金不足，1 手都买不了';continue;}
+      var cost=shares*entry, r=shares*risk;
+      out.innerHTML='<b>'+nf(shares)+'</b> 股 · 约 '+nf(Math.round(cost))+' 元'
+        +' · 风险 '+nf(Math.round(r))+' 元（'+(r/acct*100).toFixed(2)+'%）'
+        +(capped?' <span class="cap">· 受 40% 上限限制</span>':'');
+    }
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var inp=document.getElementById('acct');
+    var saved=null;
+    try{saved=localStorage.getItem(KEY);}catch(e){}
+    inp.value=saved||'100000';
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')calcAll();});
+    calcAll();
+  });
+})();
+</script>
 </body></html>

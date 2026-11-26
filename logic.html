@@ -45,6 +45,11 @@ hr{border:0;border-top:1px solid var(--line);margin:26px 0}
 ATR14       = 14 日平均真实波幅</code></pre>
 <p>然后：</p>
 <table><thead><tr><th>项目</th><th>公式</th><th>为什么</th></tr></thead><tbody><tr><td><strong>买点区</strong></td><td><code>lo × 1.005 ~ lo + 0.18h</code></td><td>贴着箱底买，不回撤就不买</td></tr><tr><td><strong>止损</strong></td><td><code>lo − 0.6 × ATR</code></td><td>留 0.6 个 ATR 的缓冲，躲开插针</td></tr><tr><td><strong>T1</strong></td><td><code>hi</code></td><td>箱顶是第一道真实供给</td></tr><tr><td><strong>T2</strong></td><td><code>hi + 0.6h</code></td><td>突破箱体后的量度目标</td></tr><tr><td><strong>突破线</strong></td><td><code>hi × 1.005</code></td><td>放量站上箱顶才算突破</td></tr></tbody></table>
+<p><strong>例外：箱体高度 &gt; 现价 25% 时</strong></p>
+<p>急跌/急涨的票，箱顶常在 20-40% 之外，当目标不现实。此时：</p>
+<pre><code>T1 = max(日线 EMA26, 区中 × 1.05)   ← 至少留 5% 空间
+T2 = hi                              ← 原箱顶降为第二目标</code></pre>
+<p>R/R 因此变低，但<strong>是真实的</strong>——不会出现「4R」其实根本到不了的情况。</p>
 <p><strong>区间中点的盈亏比：</strong></p>
 <pre><code>R:R(T1) = (hi − 区中) / (区中 − 止损)
 R:R(T2) = (T2 − 区中) / (区中 − 止损)</code></pre>
